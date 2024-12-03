@@ -2,6 +2,16 @@
 
 A tiny library to parse TOA5 files from Campbell Scientific dataloggers.
 
+[Reference](https://help.campbellsci.com/loggernet-manual/ln_manual/campbell_scientific_file_formats/toa5.htm?TocPath=Campbell%20Scientific%20File%20Formats%7CComputer%20File%20Data%20Formats%7CTOA5%7C_____0)
+
+## Usage
+
+```elixir
+iex> File.read(toa5_filename) |> CsiFormat.parse_toa5()
+{:ok, [%{...}, ...]}
+```
+
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -14,8 +24,4 @@ def deps do
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/csi_format>.
 
