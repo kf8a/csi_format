@@ -24,5 +24,3 @@ csi_format-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
-
-*.backup
