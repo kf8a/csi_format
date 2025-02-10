@@ -5,6 +5,24 @@ defmodule CsiFormat.Toa5 do
 
   alias NimbleCSV.RFC4180, as: CSV
 
+  @doc """
+  Parse TOA5 data. This function expects a string containing the raw data from a TOA5 file, and returns
+  a list of maps. Each map represents a row of data, with the keys being the column names and the values
+  being the data for that row.
+
+  ## Example
+
+       iex> parse("TIMESTAMP,RECORD,Value1,Value2\n2019-01-01 00:00:00,1,1.0,2.0\n2019-01-01 00:00:01,2,2.0,3.0")
+       {:ok, [%{"TIMESTAMP" => ~U[2019-01-01 00:00:00Z], "RECORD" => 1, "Value1" => 1.0, "Value2" => 2.0},
+         %{"TIMESTAMP" => ~U[2019-01-01 00:00:01Z], "RECORD" => 2, "Value1" => 2.0, "Value2" => 3.0}]}
+
+
+  ### Warning
+
+  no validation is done on the shape of the input data. Invalid data will likely result in returning wrong results.
+
+  """
+  @spec parse(String.t()) :: {:ok, [map()]}
   def parse(raw_data) do
     data = parse_raw_data(raw_data)
 
@@ -15,7 +33,10 @@ defmodule CsiFormat.Toa5 do
       |> Enum.map(&to_values/1)
       |> Enum.map(fn x -> to_map(Enum.at(header, 1), x) end)
 
-    {:ok, data}
+    case data do
+      [] -> {:error, "No data found"}
+      _ -> {:ok, data}
+    end
   end
 
   defp parse_raw_data(raw_data) do
